@@ -27,5 +27,5 @@ from routes import auth, customers, loans, payments, customer_portal
 app.include_router(auth.router)
 app.include_router(customers.router)
 app.include_router(loans.router)
-app.include_router(payments.router)
+app.include_router(payments.router, prefix="/api")
 app.include_router(customer_portal.router)
