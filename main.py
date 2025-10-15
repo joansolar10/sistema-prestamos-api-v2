@@ -2,7 +2,6 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 # --- Lista Explícita de Orígenes Permitidos (CORS) ---
-# Hemos incluido todas las posibles URLs de Vercel y locales.
 ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:8000",
@@ -17,7 +16,6 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# APLICACIÓN DE MIDDLEWARE CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=ORIGINS,
@@ -35,8 +33,11 @@ def health_check():
     return {"status": "ok"}
 
 from routes import auth, customers, loans, payments, customer_portal
+
+# CORRECCIÓN: Eliminar el prefix="/api" de payments
+# porque el router ya tiene prefix="/payments" en payments.py
 app.include_router(auth.router)
 app.include_router(customers.router)
 app.include_router(loans.router)
-app.include_router(payments.router, prefix="/api")
+app.include_router(payments.router)  # ← AQUÍ ESTÁ EL CAMBIO
 app.include_router(customer_portal.router)
