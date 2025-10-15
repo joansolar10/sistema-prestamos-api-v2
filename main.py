@@ -2,13 +2,10 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 # --- Lista Explícita de Orígenes Permitidos (CORS) ---
-# Usamos las URL de Vercel para garantizar que el frontend pueda comunicarse.
-# 1. URL principal del frontend en Vercel.
-# 2. URL de previsualización de Vercel (la que viste en el error de la consola).
-# 3. URL del propio backend.
+# Hemos incluido todas las posibles URLs de Vercel y locales.
 ORIGINS = [
-    "http://localhost:5173", # Por si usas el puerto default de Vite para desarrollo local
-    "http://127.0.0.1:8000",  # Por si usas el puerto default de FastAPI local
+    "http://localhost:5173",
+    "http://127.0.0.1:8000",
     "https://sistema-prestamos-frontend-v2.vercel.app", 
     "https://sistema-prestamos-frontend-v2.git.main.joans-projects-28cd9c24.vercel.app", 
     "https://sistema-prestamos-api-v2.onrender.com",
@@ -20,9 +17,10 @@ app = FastAPI(
     version="1.0.0"
 )
 
+# APLICACIÓN DE MIDDLEWARE CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=ORIGINS,  # Ahora usamos la lista explícita
+    allow_origins=ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
