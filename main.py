@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+import os;
 
 # --- Lista Explícita de Orígenes Permitidos (CORS) ---
 ORIGINS = [
@@ -18,7 +19,10 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=ORIGINS,
+    allow_origins=[
+        "https://*.vercel.app",
+        "http://localhost:5173"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -41,3 +45,7 @@ app.include_router(customers.router)
 app.include_router(loans.router)
 app.include_router(payments.router)  # ← AQUÍ ESTÁ EL CAMBIO
 app.include_router(customer_portal.router)
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
