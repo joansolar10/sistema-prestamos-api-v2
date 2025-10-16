@@ -9,17 +9,27 @@ load_dotenv()
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 
-# Fallback a sqlite si no hay DATABASE_URL (útil en desarrollo)
 if not DATABASE_URL:
-    DATABASE_URL = "sqlite:///./dev.db"
-    connect_args = {"check_same_thread": False}
+    raise ValueError("❌ ERROR: DATABASE_URL no está configurada en el archivo .env")
+
+print("✅ DATABASE_URL configurada:", DATABASE_URL)
+
+# Crear engine según el tipo de base de datos
+if DATABASE_URL.startswith("sqlite"):
+    engine = create_engine(
+        DATABASE_URL, 
+        pool_pre_ping=True, 
+        connect_args={"check_same_thread": False}
+    )
 else:
-    connect_args = {}
+    # Para PostgreSQL (Supabase)
+    engine = create_engine(
+        DATABASE_URL, 
+        pool_pre_ping=True,
+        pool_size=10,
+        max_overflow=20
+    )
 
-print("DATABASE_URL used:", DATABASE_URL)
-
-# create_engine con connect_args sólo para sqlite
-engine = create_engine(DATABASE_URL, pool_pre_ping=True, connect_args=connect_args)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
@@ -31,6 +41,4 @@ def get_db() -> Generator:
         db.close()
 
 def init_db():
-    # Si tus modelos están en otro módulo, impórtalos aquí antes de create_all
-    # from models import User, Loan  # <- descomenta/ajusta según tu proyecto
     Base.metadata.create_all(bind=engine)
