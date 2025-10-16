@@ -1,21 +1,15 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-<<<<<<< HEAD
-from dotenv import load_dotenv
 import os
 import uvicorn
 
-load_dotenv()
-=======
-import os
-import uvicorn
->>>>>>> fdb189e41d0e739a6906f7d856929c98bb59dcf7
-
+# --- Lista Explícita de Orígenes Permitidos (CORS) ---
 ORIGINS = [
     "http://localhost:5173",
-    "http://127.0.0.1:5173",
-    "http://localhost:8000",
     "http://127.0.0.1:8000",
+    "https://sistema-prestamos-frontend-v2.vercel.app", 
+    "https://sistema-prestamos-frontend-v2.git.main.joans-projects-28cd9c24.vercel.app", 
+    "https://sistema-prestamos-api-v2.onrender.com",
 ]
 
 app = FastAPI(
@@ -40,14 +34,14 @@ def root():
 def health_check():
     return {"status": "ok"}
 
-# Importar routers
 from routes import auth, customers, loans, payments, customer_portal
 
-# ✅ NO agregues prefix aquí porque ya lo tienen en sus archivos
+# CORRECCIÓN: Eliminar el prefix="/api" de payments
+# porque el router ya tiene prefix="/payments" en payments.py
 app.include_router(auth.router)
 app.include_router(customers.router)
 app.include_router(loans.router)
-app.include_router(payments.router)
+app.include_router(payments.router)  # ← AQUÍ ESTÁ EL CAMBIO
 app.include_router(customer_portal.router)
 
 if __name__ == "__main__":
