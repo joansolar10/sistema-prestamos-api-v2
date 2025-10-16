@@ -10,6 +10,7 @@ ORIGINS = [
     "https://sistema-prestamos-frontend-v2.vercel.app", 
     "https://sistema-prestamos-frontend-v2.git.main.joans-projects-28cd9c24.vercel.app", 
     "https://sistema-prestamos-api-v2.onrender.com",
+    "https://prestamos-api-6a81.onrender.com",
 ]
 
 app = FastAPI(
