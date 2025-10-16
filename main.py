@@ -1,10 +1,15 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+<<<<<<< HEAD
 from dotenv import load_dotenv
 import os
 import uvicorn
 
 load_dotenv()
+=======
+import os
+import uvicorn
+>>>>>>> fdb189e41d0e739a6906f7d856929c98bb59dcf7
 
 ORIGINS = [
     "http://localhost:5173",
